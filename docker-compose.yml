@@ -1,0 +1,63 @@
+version: '2'
+services:
+  node_a:
+    cap_add:
+      - NET_ADMIN
+    build:
+      context: ./image/
+    volumes:
+      - type: bind
+        source: ./configs/node_a/bird/bird.conf
+        target: /etc/bird.conf
+    networks:
+      common:
+        ipv4_address: 172.255.0.2
+      node_a:
+  node_b:
+    cap_add:
+      - NET_ADMIN
+    build:
+      context: ./image/
+    volumes:
+      - type: bind
+        source: ./configs/node_b/bird/bird.conf
+        target: /etc/bird.conf
+    networks:
+      common:
+        ipv4_address: 172.255.0.3
+      node_b:
+  node_c:
+    cap_add:
+      - NET_ADMIN
+    build:
+      context: ./image/
+    volumes:
+      - type: bind
+        source: ./configs/node_c/bird/bird.conf
+        target: /etc/bird.conf
+    networks:
+      common:
+        ipv4_address: 172.255.0.4
+      node_c:
+
+networks:
+  common:
+    ipam:
+      config:
+        - subnet: 172.255.0.0/24
+  node_a:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.10.0.0/16
+  node_b:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.20.0.0/16
+  node_c:
+    internal: true
+    ipam:
+      config:
+        - subnet: 10.30.0.0/16
+
